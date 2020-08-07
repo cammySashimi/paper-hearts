@@ -1,0 +1,387 @@
+{
+    "version": "0.0.1",
+    "title": "Candice at the Ocean",
+    "titleSceen": null,
+    "bgm": "ocean.ogg",
+    "firstRoom": 0,
+    "player": {
+        "startX": 372,
+        "startY": 415,
+        "spr": [0],
+        "xs": 1,
+        "ys": 1,
+        "angle": 0,
+        "speed": 5
+    },
+    "sprites": [
+        ["player", "player.png"],
+        ["cliff", "cliff.png"],
+        ["door-closed", "door-closed.png"],
+        ["door-open", "door-open.png"],
+        ["flower-p-1", "flower-p-1.png"],
+        ["flower-p-2", "flower-p-2.png"],
+        ["flower-y-1", "flower-y-1.png"],
+        ["flower-y-2", "flower-y-2.png"],
+        ["grass-a-1", "grass-a-1.png"], 
+        ["grass-a-2", "grass-a-2.png"], 
+        ["grass-b-1", "grass-b-1.png"], 
+        ["grass-b-2", "grass-b-2.png"], 
+        ["grass-c-1", "grass-c-1.png"], 
+        ["grass-c-2", "grass-c-2.png"], 
+        ["money-1", "money-1.png"],
+        ["money-2", "money-2.png"],
+        ["quin", "quin.png"],
+        ["road", "road.png"],
+        ["text", "text.png"],
+        ["tower", "tower.png"],
+        ["wall", "wall.png"]
+    ],
+    "backgrounds": [
+        ["defaultBg", "defaultBg.png"]
+    ],
+    "sounds": [
+    ],
+    "rooms": [
+        {
+            "bg": 0,
+            "walls": [
+                {
+                    "spr": [20],
+                    "x": 367,
+                    "y": 164,
+                    "xs": 2.85,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [20],
+                    "x": 464,
+                    "y": 236,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [20],
+                    "x": 274,
+                    "y": 236,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [19],
+                    "x": 175,
+                    "y": 156,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [19],
+                    "x": 553,
+                    "y": 161,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                }
+            ],
+            "decor": [
+                {
+                    "spr": [17],
+                    "x": 373,
+                    "y": 371,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [17],
+                    "x": 378,
+                    "y": 528,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [17],
+                    "x": 383,
+                    "y": 683,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [4,5],
+                    "x": 176,
+                    "y": 292,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [5,4],
+                    "x": 203,
+                    "y": 290,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [4,5],
+                    "x": 231,
+                    "y": 291,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [4,5],
+                    "x": 256,
+                    "y": 289,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [5,4],
+                    "x": 284,
+                    "y": 293,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [4,5],
+                    "x": 451,
+                    "y": 291,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [5,4],
+                    "x": 477,
+                    "y": 292,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [5,4],
+                    "x": 505,
+                    "y": 290,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [4,5],
+                    "x": 536,
+                    "y": 290,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [5,4],
+                    "x": 561,
+                    "y": 292,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [8,9],
+                    "x": -73,
+                    "y": 488,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [8,9],
+                    "x": 882,
+                    "y": 186,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                },
+                {
+                    "spr": [8,9],
+                    "x": 589,
+                    "y": 589,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0
+                }
+            ],
+            "actors": [
+				{
+					"spr": [2],
+					"x": 320,
+					"y": 180,
+					"xs": 1,
+                    "ys": 1,
+                    "angle": 0,
+					"mode": "press",
+					"active": true,
+					"destroySelf": true,
+					"sound": {
+						"play": false,
+						"sfx": 0
+					},
+					"create": {
+						"createActor": false,
+						"actorId": 0
+					}
+				}
+            ],
+            "teleports": [
+                {
+                    "spr": [3],
+                    "x": 370,
+                    "y": 236,
+                    "xs": 1,
+                    "ys": 1,
+                    "angle": 0,
+                    "destR": 1,
+					"destX": 360,
+					"destY": 50
+                }
+            ]
+        },
+        {
+			"bg": 0,
+            "walls": [
+                {
+					"spr": [1],
+					"x": 360,
+					"y": 600,
+					"xs": 2,
+                    "ys": 1.5,
+                    "angle": 0
+                }
+            ],
+			"decor": [
+				{
+					"spr": [17],
+					"x": 360,
+					"y": 80,
+					"xs": 1,
+					"ys": 1,
+                    "angle": 0
+				},
+				{
+					"spr": [17],
+					"x": 365,
+					"y": 225,
+					"xs": 1,
+					"ys": 1,
+                    "angle": 0
+				},
+				{
+					"spr": [17],
+					"x": 370,
+					"y": 354,
+					"xs": 1,
+					"ys": 1,
+                    "angle": 0
+                }
+            ],
+			"actors": [
+            ],
+			"teleports": [
+            ]
+		},
+		{
+			"bg": 0,
+			"walls": [
+				{
+					"spr": [20],
+					"x": 0,
+					"y": 50,
+					"xs": 1,
+                    "ys": 8,
+                    "angle": 0
+				},
+				{
+					"spr": [20],
+					"x": 1202,
+					"y": 50,
+					"xs": 1,
+                    "ys": 8,
+                    "angle": 0
+				},
+				{
+					"spr": [20],
+					"x": 0,
+					"y": 0,
+					"xs": 13,
+                    "ys": 1,
+                    "angle": 0
+				},
+				{
+					"spr": [20],
+					"x": 0,
+					"y": 649,
+					"xs": 5.5,
+                    "ys": 1,
+                    "angle": 0
+				},
+				{
+					"spr": [20],
+					"x": 764,
+					"y": 649,
+					"xs": 5.5,
+                    "ys": 1,
+                    "angle": 0
+				}
+            ],
+			"decor": [
+            ],
+			"actors": [
+				{
+					"spr": [16],
+					"x": 602,
+					"y": 212,
+					"xs": 1,
+                    "ys": 1,
+                    "angle": 0,
+					"mode": "press",
+					"active": true,
+					"destroySelf": false,
+					"sound": {
+						"play": false,
+						"sfx": 0
+					},
+					"create": {
+						"createActor": true,
+						"actorId": 1
+					}
+				},
+				{
+					"spr": [18],
+					"x": 534,
+					"y": 148,
+					"xs": 1,
+                    "ys": 1,
+                    "angle": 0,
+					"mode": "step",
+					"active": false,
+					"destroySelf": false,
+					"sound": {
+						"play": false,
+						"sfx": 0
+					},
+					"create": {
+						"createActor": false,
+						"actorId": 0
+					}
+				}
+            ],
+			"teleports": [
+            ]
+		}
+    ]
+}

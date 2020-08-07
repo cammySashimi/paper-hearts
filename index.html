@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <title>Paper Hearts</title>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" contents="width=device-width, initial scale=1.0">
+        
+        <style>
+            /* fixes issues where phaser canvas is a little too low */
+            * {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+        </style>
+
+        <!-- Phasher (note to self replace with phaser.min.js at release) -->
+        <script src="lib/phaser.js"></script>
+
+        <!-- Prefabs -->
+        <script src="src/prefabs/Draggable.js"></script>
+        <script src="src/prefabs/DraggableSpawner.js"></script>
+        <script src="src/prefabs/Button.js"></script>
+        <script src="src/prefabs/Player.js"></script>
+        <script src="src/prefabs/Wall.js"></script>
+        <script src="src/prefabs/Decor.js"></script>
+        <script src="src/prefabs/Teleport.js"></script>
+        <script src="src/prefabs/Actor.js"></script>
+
+        <!-- Scenes -->
+        <script src="src/scenes/Preload.js"></script>
+        <script src="src/scenes/Title.js"></script>
+        <script src="src/scenes/Play.js"></script>
+        <script src="src/scenes/Editor.js"></script>
+
+        <!-- Main js file -->
+		<script src="src/main.js"></script>
+
+    </head>
+
+</html>
