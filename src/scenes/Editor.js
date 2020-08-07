@@ -367,6 +367,7 @@ class Editor extends Phaser.Scene {
 
             var context = canvas.getContext('2d');
             if (width && height) {
+
                 canvas.width = width;
                 canvas.height = height;
                 context.drawImage(video, 0, 0, width, height);
@@ -376,11 +377,7 @@ class Editor extends Phaser.Scene {
                 
                 this.textures.addBase64("testimg", data);
 
-                let beep = new DraggableSpawner (
-                    this,
-                    400, 20,
-                    "testimg", 0
-                ).setOrigin(0, 0);
+                let beep = this.add.image(500, 230, "testimg");
 
             }
 
