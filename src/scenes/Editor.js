@@ -192,7 +192,58 @@ class Editor extends Phaser.Scene {
             this.newAssetButton = new Button (
                 this, 235, 480, "btnNewSprite", 0, 0,
                 function() {
-                    // TODO: camera interface
+                    
+                    // create camera div
+                    let camDiv = document.createElement("DIV");
+                    camDiv.className = "camera";
+                    document.body.appendChild(camDiv);
+                    
+                    // create video element
+                    let video = document.createElement("VIDEO");
+                    video.id = "video";
+                    camDiv.appendChild(video);
+                    
+                    // create photo takin button
+                    let takePhoto = document.createElement("BUTTON");
+                    takePhoto.id = "takePhoto";
+                    camDiv.appendChild(takePhoto);
+
+                    // create canvas for video frames
+                    let canv = document.createElement("CANVAS");
+                    canv.id = "canvas";
+                    document.body.appendChild(canv);
+
+                    // create output div
+                    let outDiv = document.createElement("DIV");
+                    outDiv.className = "output";
+                    document.body.appendChild(outDiv);
+
+                    // create image element
+                    let photo = document.createElement("IMG");
+                    photo.id = "photo";
+                    outDiv.appendChild(photo);
+
+                    let photoWidth = 320;
+                    let photoHeight = 0;
+
+                    let streaming = false;
+                  
+                    let videoEl = null;
+                    let canvasEl = null;
+                    let photoEl = null;
+                    let takebtn = null;
+
+                    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                    
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    
+                    .catch(function(err) {
+                        console.log("An error occurred: " + err);
+                    });
+
                 }
             );
 
