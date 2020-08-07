@@ -192,106 +192,7 @@ class Editor extends Phaser.Scene {
             this.newAssetButton = new Button (
                 this, 235, 480, "btnNewSprite", 0, 0,
                 function() {
-                    
-                    // camera code from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
-                    // thanks, mdn! <3
-
-                    let width = 320;
-                    let height = 0;
-                    let streaming = false;
-
-                    // create camera div
-                    let camDiv = document.createElement("DIV");
-                    camDiv.className = "camera";
-                    document.body.appendChild(camDiv);
-                    
-                    // create video element
-                    let video = document.createElement("VIDEO");
-                    video.id = "video";
-                    camDiv.appendChild(video);
-                    
-                    video.style.position = "fixed";
-                    video.style.top = "50%";
-                    video.style.left = "50%";
-                    video.style.zIndex = "9999";
-                    video.style.transform = "translate(-50%, -50%)";
-
-                    // create photo takin button
-                    let takePhoto = document.createElement("BUTTON");
-                    takePhoto.id = "takePhoto";
-                    camDiv.appendChild(takePhoto);
-
-                    takePhoto.style.position = "fixed";
-                    takePhoto.style.top = "50%";
-                    takePhoto.style.left = "50%";
-                    takePhoto.style.zIndex = "10000";
-                    takePhoto.style.transform = "translate(-50%, -50%)";
-
-                    // create canvas for video frames
-                    let canv = document.createElement("CANVAS");
-                    canv.id = "canvas";
-                    document.body.appendChild(canv);
-                    
-                    canv.style.display = "none";
-
-                    // create output div
-                    let outDiv = document.createElement("DIV");
-                    outDiv.className = "output";
-                    document.body.appendChild(outDiv);
-
-                    // create image element
-                    let photo = document.createElement("IMG");
-                    photo.id = "photo";
-                    outDiv.appendChild(photo);
-
-                    // can i have video a stream?? pretty please?
-                    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                        video.play();
-                    })
-                    .catch(function(err) {
-                        console.log("An error occurred: " + err);
-                    });
-
-                    // set video attributes when streaming starts
-                    video.addEventListener('canplay', function(ev) {
-
-                        if (!streaming) {
-                            height = video.videoHeight / (video.videoWidth/width);
-                            video.setAttribute('width', width);
-                            video.setAttribute('height', height);
-                            canvas.setAttribute('width', width);
-                            canvas.setAttribute('height', height);
-                            streaming = true;
-                        }
-
-                    }, false);
-
-                    takePhoto.addEventListener('click', function(ev){
-
-                        var context = canvas.getContext('2d');
-                        if (width && height) {
-                            canvas.width = width;
-                            canvas.height = height;
-                            context.drawImage(video, 0, 0, width, height);
-                        
-                            var data = canvas.toDataURL('image/png');
-                            photo.setAttribute('src', data);
-                        } else {
-                            clearphoto();
-                        }
-
-                        ev.preventDefault();
-                    }, false);
-
-                    var context = canvas.getContext('2d');
-                    context.fillStyle = "#AAA";
-                    context.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    var data = canvas.toDataURL('image/png');
-                    photo.setAttribute('src', data);
-    
+                    self.createCameraWindow();                    
                 }
             );
 
@@ -381,6 +282,118 @@ class Editor extends Phaser.Scene {
             (this.numSprites/this.draggableNumCols) - this.draggableNumRows
         );
         this.scrollBarHandle.y = this.scrollBarYTop + (scrollAmount*scrollLevel);
+
+    }
+
+    createCameraWindow() {
+
+        // camera code from
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
+        // thanks, mdn! <3
+
+        let width = 320;
+        let height = 0;
+        let streaming = false;
+
+        // create camera div
+        let camDiv = document.createElement("DIV");
+        camDiv.className = "camera";
+        document.body.appendChild(camDiv);
+        
+        // create video element
+        let video = document.createElement("VIDEO");
+        video.id = "video";
+        camDiv.appendChild(video);
+        
+        video.style.position = "fixed";
+        video.style.top = "50%";
+        video.style.left = "50%";
+        video.style.zIndex = "9999";
+        video.style.transform = "translate(-50%, -50%)";
+
+        // create photo takin button
+        let takePhoto = document.createElement("BUTTON");
+        takePhoto.id = "takePhoto";
+        camDiv.appendChild(takePhoto);
+
+        takePhoto.style.position = "fixed";
+        takePhoto.style.top = "50%";
+        takePhoto.style.left = "50%";
+        takePhoto.style.zIndex = "10000";
+        takePhoto.style.transform = "translate(-50%, -50%)";
+
+        // create canvas for video frames
+        let canv = document.createElement("CANVAS");
+        canv.id = "canvas";
+        document.body.appendChild(canv);
+        
+        canv.style.display = "none";
+
+        // create output div
+        let outDiv = document.createElement("DIV");
+        outDiv.className = "output";
+        document.body.appendChild(outDiv);
+
+        // create image element
+        let photo = document.createElement("IMG");
+        photo.id = "photo";
+        outDiv.appendChild(photo);
+
+        // can i have video a stream?? pretty please?
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(function(err) {
+            console.log("An error occurred: " + err);
+        });
+
+        // set video attributes when streaming starts
+        video.addEventListener('canplay', function(ev) {
+
+            if (!streaming) {
+                height = video.videoHeight / (video.videoWidth/width);
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                streaming = true;
+            }
+
+        }, false);
+
+        takePhoto.addEventListener('click', function(ev){
+
+            var context = canvas.getContext('2d');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+            
+                var data = canvas.toDataURL('image/png');
+                photo.setAttribute('src', data);
+            }
+
+            ev.preventDefault();
+            
+        }, false);
+
+        var context = canvas.getContext('2d');
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        var data = canvas.toDataURL('image/png');
+
+        this.textures.addBase64("imagetest", data);
+
+        let beep = new DraggableSpawner (
+            this,
+            20, 20,
+            "imagetest", 0
+        ).setOrigin(0.5, 0.5);
+
+        //photo.setAttribute('src', data);
 
     }
 
