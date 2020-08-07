@@ -381,7 +381,9 @@ class Editor extends Phaser.Scene {
                     this.add.image(1000, 230, "btnFileOpen");
                 }, this);
 
-                this.textures.addBase64("testimg", data);
+                this.add.image(1000, 230, "btnFileOpen");
+
+                //this.textures.addBase64("testimg", data);
 
             }
 
