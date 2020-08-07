@@ -196,8 +196,8 @@ class Editor extends Phaser.Scene {
                     // camera code from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
                     // thanks, mdn! <3
 
-                    let photoWidth = 320;
-                    let photoHeight = 0;
+                    let width = 320;
+                    let height = 0;
                     let streaming = false;
 
                     // create camera div
@@ -210,10 +210,11 @@ class Editor extends Phaser.Scene {
                     video.id = "video";
                     camDiv.appendChild(video);
                     
-                    video.style.position = "absolute";
+                    video.style.position = "fixed";
                     video.style.top = "50%";
                     video.style.left = "50%";
                     video.style.zIndex = "-9999";
+                    video.style.transform = "translate(-50%, -50%)";
 
                     // create photo takin button
                     let takePhoto = document.createElement("BUTTON");
@@ -252,7 +253,6 @@ class Editor extends Phaser.Scene {
                             height = video.videoHeight / (video.videoWidth/width);
                             video.setAttribute('width', width);
                             video.setAttribute('height', height);
-                            video.style.transform = "translate(-50%, -50%)";
                             canvas.setAttribute('width', width);
                             canvas.setAttribute('height', height);
                             streaming = true;
