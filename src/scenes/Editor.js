@@ -373,11 +373,14 @@ class Editor extends Phaser.Scene {
                 context.drawImage(video, 0, 0, width, height);
             
                 var data = canvas.toDataURL("image/png");
+            
                 photo.setAttribute("src", data);
                 
-                this.textures.addBase64("testimg", data);
+                this.textures.once('addtexture', function () {
+                    this.add.image(500, 230, "testimg");
+                }, this);
 
-                let beep = this.add.image(500, 230, "testimg");
+                this.textures.addBase64("testimg", data);
 
             }
 
