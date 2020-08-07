@@ -371,8 +371,17 @@ class Editor extends Phaser.Scene {
                 canvas.height = height;
                 context.drawImage(video, 0, 0, width, height);
             
-                var data = canvas.toDataURL('image/png');
-                photo.setAttribute('src', data);
+                var data = canvas.toDataURL("image/png");
+                photo.setAttribute("src", data);
+                
+                this.textures.addBase64("testimg", data);
+
+                let beep = new DraggableSpawner (
+                    this,
+                    20, 20,
+                    "testimg", 0
+                ).setOrigin(0, 0);
+                
             }
 
             ev.preventDefault();
@@ -384,16 +393,7 @@ class Editor extends Phaser.Scene {
         context.fillRect(0, 0, canvas.width, canvas.height);
         
         var data = canvas.toDataURL('image/png');
-
-        this.textures.addBase64("imagetest", data);
-
-        let beep = new DraggableSpawner (
-            this,
-            20, 20,
-            "imagetest", 0
-        ).setOrigin(0.5, 0.5);
-
-        //photo.setAttribute('src', data);
+        photo.setAttribute('src', data);
 
     }
 
