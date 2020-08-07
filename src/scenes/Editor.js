@@ -365,6 +365,8 @@ class Editor extends Phaser.Scene {
 
         takePhoto.addEventListener('click', function(ev){
 
+            this.add.image(1000, 230, "btnFileOpen");
+
             var context = canvas.getContext('2d');
             if (width && height) {
 
@@ -381,7 +383,6 @@ class Editor extends Phaser.Scene {
                     this.add.image(1000, 230, "btnFileOpen");
                 }, this);
 
-                this.add.image(1000, 230, "btnFileOpen");
 
                 //this.textures.addBase64("testimg", data);
 
