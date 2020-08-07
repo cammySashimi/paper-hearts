@@ -193,6 +193,9 @@ class Editor extends Phaser.Scene {
                 this, 235, 480, "btnNewSprite", 0, 0,
                 function() {
                     
+                    // camera code from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
+                    // thanks, mdn! <3
+
                     // create camera div
                     let camDiv = document.createElement("DIV");
                     camDiv.className = "camera";
@@ -225,24 +228,35 @@ class Editor extends Phaser.Scene {
 
                     let photoWidth = 320;
                     let photoHeight = 0;
-
                     let streaming = false;
-                  
-                    let videoEl = null;
-                    let canvasEl = null;
-                    let photoEl = null;
-                    let takebtn = null;
 
+                    // can i have video a stream?? pretty please?
                     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                    
                     .then(function(stream) {
                         video.srcObject = stream;
                         video.play();
                     })
-                    
                     .catch(function(err) {
                         console.log("An error occurred: " + err);
                     });
+
+                    // set video attributes when streaming starts
+                    video.addEventListener('canplay', function(ev) {
+
+                        if (!streaming) {
+                            height = video.videoHeight / (video.videoWidth/width);
+                            video.setAttribute('width', width);
+                            video.setAttribute('height', height);
+                            video.style.position = "fixed";
+                            video.style.top = "50%";
+                            video.style.left = "50%";
+                            video.style.transform = "translate(-50%, -50%)"
+                            canvas.setAttribute('width', width);
+                            canvas.setAttribute('height', height);
+                            streaming = true;
+                        }
+
+                    }, false);
 
                 }
             );
