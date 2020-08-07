@@ -378,10 +378,10 @@ class Editor extends Phaser.Scene {
 
                 let beep = new DraggableSpawner (
                     this,
-                    20, 20,
+                    400, 20,
                     "testimg", 0
                 ).setOrigin(0, 0);
-                
+
             }
 
             ev.preventDefault();
