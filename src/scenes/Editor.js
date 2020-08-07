@@ -260,6 +260,30 @@ class Editor extends Phaser.Scene {
 
                     }, false);
 
+                    takePhoto.addEventListener('click', function(ev){
+
+                        var context = canvas.getContext('2d');
+                        if (width && height) {
+                            canvas.width = width;
+                            canvas.height = height;
+                            context.drawImage(video, 0, 0, width, height);
+                        
+                            var data = canvas.toDataURL('image/png');
+                            photo.setAttribute('src', data);
+                        } else {
+                            clearphoto();
+                        }
+
+                        ev.preventDefault();
+                    }, false);
+
+                    var context = canvas.getContext('2d');
+                    context.fillStyle = "#AAA";
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    var data = canvas.toDataURL('image/png');
+                    photo.setAttribute('src', data);
+    
                 }
             );
 
