@@ -250,7 +250,7 @@ class Editor extends Phaser.Scene {
                             video.style.position = "fixed";
                             video.style.top = "50%";
                             video.style.left = "50%";
-                            video.style.transform = "translate(-50%, -50%)";
+                            //video.style.transform = "translate(-50%, -50%)";
                             video.style.zIndex = "-9999";
                             canvas.setAttribute('width', width);
                             canvas.setAttribute('height', height);
