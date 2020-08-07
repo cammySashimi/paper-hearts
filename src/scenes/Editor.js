@@ -221,14 +221,18 @@ class Editor extends Phaser.Scene {
                     takePhoto.id = "takePhoto";
                     camDiv.appendChild(takePhoto);
 
-                    camDiv.style.top = "50%";
-                    camDiv.style.left = "50%";
-                    camDiv.style.zIndex = "10000";
+                    takePhoto.style.position = "fixed";
+                    takePhoto.style.top = "50%";
+                    takePhoto.style.left = "50%";
+                    takePhoto.style.zIndex = "10000";
+                    takePhoto.style.transform = "translate(-50%, -50%)";
 
                     // create canvas for video frames
                     let canv = document.createElement("CANVAS");
                     canv.id = "canvas";
                     document.body.appendChild(canv);
+                    
+                    canv.style.display = "none";
 
                     // create output div
                     let outDiv = document.createElement("DIV");
