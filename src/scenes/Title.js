@@ -27,8 +27,10 @@ class Title extends Phaser.Scene {
             buttonVerticalStart,
             "btnNewProject", 0, 0,
             function() {
-                self.loadGame();
-                self.scene.start("editorScene", self.gameData);
+                let gd = self.newGame();
+                self.scene.start("editorScene", gd);
+                //self.loadGame();
+                //self.scene.start("editorScene", self.gameData);
             }
         );
 
@@ -59,13 +61,49 @@ class Title extends Phaser.Scene {
 
     }
 
+    newGame() {
+
+        // create empty gamedata shell      
+        let gd = {
+            version: this.game.global.editorVersion,
+            title: "New Game",
+            titleSceen: null,
+            bgm: null,
+            firstRoom: 0,
+            player: {
+            },
+            sprites: [
+            ],
+            backgrounds: [
+                ["defaultBg", "defaultBg.png"]
+            ],
+            sounds: [
+            ],
+            rooms: [
+                {
+                    bg: 0,
+                    walls: [
+                    ],
+                    decor: [
+                    ],
+                    actors: [
+                    ],
+                    teleports: [
+                    ]
+                }
+            ]
+        }
+
+        return gd;
+
+    }
+
     loadGame(gd) {
 
-            this.gameData = this.cache.json.get("gameData");
+        this.gameData = this.cache.json.get("gameData");
 
         this.gameData.sprites.forEach((spr) => {
             this.load.image(spr[0], "assets/game/"+spr[1]);
-            console.log(spr[0] + " /// " + spr[1]);
         });
 
         this.load.audio("bgm", "assets/game/"+this.gameData.bgm);

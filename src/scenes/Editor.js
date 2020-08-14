@@ -9,6 +9,12 @@ class Editor extends Phaser.Scene {
         this.gd = gameData;
     }
 
+    preload() {
+
+        this.load.plugin("rexcanvasplugin", "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcanvasplugin.min.js", true);
+
+    }
+
     create() {
 
          /*¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯*\
@@ -82,12 +88,20 @@ class Editor extends Phaser.Scene {
         this.add.image(277, 340, "contextFrame").setDepth(this.UIDepth);
 
         // add buttons
+        this.btnPlay = new Button (
+            this, 79, 646, "btnPlay", 0, 0,
+            function() {
+                self.scene.start("playScene", self.serialiseObjects(self.currentRoom));
+            }
+        ).setDepth(this.UIDepth);
+
         this.btnFileMenu = new Button (
             this, 342, 646, "btnFileOpen", 0, 0,
             function() {
                 self.serialiseObjects(self.currentRoom);
             }
         ).setDepth(this.UIDepth);
+
         this.btnHelp = new Button (this, 480, 645, "btnHelp", 0, 0).setDepth(this.UIDepth);
 
         // add tabs
@@ -190,9 +204,66 @@ class Editor extends Phaser.Scene {
             );
 
             this.newAssetButton = new Button (
-                this, 235, 480, "btnNewSprite", 0, 0,
+                this, 235, 480, "btnUploadPic", 0, 0,
                 function() {
-                    self.createCameraWindow();                    
+
+                    // create upload button
+                    self.uploadButton = document.createElement("INPUT");
+                    self.uploadButton.type = "file";
+                    self.uploadButton.accept = "image/*";
+                    self.uploadButton.style.display = "none";
+                    document.body.appendChild(self.uploadButton);
+                    self.uploadButton.click();
+                    
+                    // create canvas
+                    let canvas = self.add.rexCanvas(0, 0, 1, 1);
+                    
+                    // when a file is uploaded...
+                    self.uploadButton.addEventListener("change", function (e) {
+                        
+                        // create an image url
+                        let file = e.target.files[0];
+                        let objectURL = URL.createObjectURL(file);
+
+                        // load the url into the canvas
+                        canvas.loadFromURLPromise(objectURL).then(function () {
+                            
+                            // remove object url from memory
+                            URL.revokeObjectURL(objectURL);
+
+                            // generate scaled texture
+                            let maxSize = 800
+                            if (canvas.width > canvas.height) {
+                                if (canvas.width > maxSize) {
+                                    let wm = (maxSize/canvas.width);
+                                    let hm = (maxSize/canvas.width);
+                                    canvas.generateTexture(self.numSprites, 0, 0, canvas.width*wm, canvas.height*hm);
+                                } else {
+                                    canvas.generateTexture(self.numSprites, 0, 0, canvas.width, canvas.height);
+                                }
+                            } else {
+                                if (canvas.height > maxSize) {
+                                    let wm = (maxSize/canvas.height);
+                                    let hm = (maxSize/canvas.height);
+                                    canvas.generateTexture(self.numSprites, 0, 0, canvas.width*wm, canvas.height*hm);
+                                } else {
+                                    canvas.generateTexture(self.numSprites, 0, 0, canvas.width, canvas.height);
+                                }
+                            }
+
+                            // push texture to sprites, update sprite window
+                            self.gd.sprites.push([self.numSprites, "doesntmatter.png"]);
+                            self.numSprites++;
+                            self.fillCameraMenu(self.cameraMenuScrollLevel);
+
+                            // clean up
+                            canvas.destroy();
+                            self.uploadButton.remove();
+
+                        });
+
+                    });
+                    
                 }
             );
 
@@ -277,127 +348,7 @@ class Editor extends Phaser.Scene {
 
         });
 
-        // put scrollbar where it needs to be
-        let scrollAmount = this.scrollBarRange / (
-            (this.numSprites/this.draggableNumCols) - this.draggableNumRows
-        );
-        this.scrollBarHandle.y = this.scrollBarYTop + (scrollAmount*scrollLevel);
-
-    }
-
-    createCameraWindow() {
-
-        // camera code from
-        // https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
-        // thanks, mdn! <3
-
-        let width = 320;
-        let height = 0;
-        let streaming = false;
-
-        // create camera div
-        let camDiv = document.createElement("DIV");
-        camDiv.className = "camera";
-        document.body.appendChild(camDiv);
-        
-        // create video element
-        let video = document.createElement("VIDEO");
-        video.id = "video";
-        camDiv.appendChild(video);
-        
-        video.style.position = "fixed";
-        video.style.top = "50%";
-        video.style.left = "50%";
-        video.style.zIndex = "9999";
-        video.style.transform = "translate(-50%, -50%)";
-
-        // create photo takin button
-        let takePhoto = document.createElement("BUTTON");
-        takePhoto.id = "takePhoto";
-        camDiv.appendChild(takePhoto);
-
-        takePhoto.style.position = "fixed";
-        takePhoto.style.top = "50%";
-        takePhoto.style.left = "50%";
-        takePhoto.style.zIndex = "10000";
-        takePhoto.style.transform = "translate(-50%, -50%)";
-
-        // create canvas for video frames
-        let canv = document.createElement("CANVAS");
-        canv.id = "canvas";
-        document.body.appendChild(canv);
-        
-        canv.style.display = "none";
-
-        // create output div
-        let outDiv = document.createElement("DIV");
-        outDiv.className = "output";
-        document.body.appendChild(outDiv);
-
-        // create image element
-        let photo = document.createElement("IMG");
-        photo.id = "photo";
-        outDiv.appendChild(photo);
-
-        // can i have video a stream?? pretty please?
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.play();
-        })
-        .catch(function(err) {
-            console.log("An error occurred: " + err);
-        });
-
-        // set video attributes when streaming starts
-        video.addEventListener('canplay', function(ev) {
-
-            if (!streaming) {
-                height = video.videoHeight / (video.videoWidth/width);
-                video.setAttribute('width', width);
-                video.setAttribute('height', height);
-                canvas.setAttribute('width', width);
-                canvas.setAttribute('height', height);
-                streaming = true;
-            }
-
-        }, false);
-
-        takePhoto.addEventListener('click', function(ev){
-
-            this.add.image(1000, 230, "btnFileOpen");
-
-            var context = canvas.getContext('2d');
-            if (width && height) {
-
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
-            
-                var data = canvas.toDataURL("image/png");
-            
-                photo.setAttribute("src", data);
-                
-                this.textures.once('addtexture', function () {
-                    //this.add.image(500, 230, "testimg");
-                    this.add.image(1000, 230, "btnFileOpen");
-                }, this);
-
-
-                //this.textures.addBase64("testimg", data);
-
-            }
-
-            ev.preventDefault();
-            
-        }, false);
-
-        var context = canvas.getContext('2d');
-        context.fillStyle = "#AAA";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        var data = canvas.toDataURL('image/png');
-        photo.setAttribute('src', data);
+        this.placeScrollbar(scrollLevel, this.numSprites);
 
     }
 
@@ -441,10 +392,48 @@ class Editor extends Phaser.Scene {
             );
 
             this.newAssetButton = new Button (
-                this, 235, 480, "btnNewSound", 0, 0,
+                this, 235, 480, "btnUploadSound", 0, 0,
                 function() {
-                    // TODO: sound recording interface
+                    
+                    // create upload button
+                    self.uploadButton = document.createElement("INPUT");
+                    self.uploadButton.type = "file";
+                    self.uploadButton.accept = "audio/*";
+                    self.uploadButton.style.display = "none";
+                    document.body.appendChild(self.uploadButton);
+                    self.uploadButton.click();
+                    
+                    // create canvas
+                    //let canvas = self.add.rexCanvas(0, 0, 1, 1);
+                    
+                    // when a file is uploaded...
+                    self.uploadButton.addEventListener("change", function (e) {
+                        
+                        // create a sound url
+                        let file = e.target.files[0];
+                        let objectURL = URL.createObjectURL(file);
+
+                        // create audio context
+                        // code from https://supernapie.com/blog/loading-assets-as-data-uri-in-phaser-3/
+                        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        audioCtx.decodeAudioData(self.game.global.base64ToArrayBuffer(objectURL), (buffer) => {
+                            this.cache.audio.add(self.numSounds, buffer);
+                        }, (e) => { console.log("Error with decoding audio data" + e.err); });
+
+                        self.gd.sounds.push([self.numSounds, "blah.blah"]);
+                        self.numSounds++;
+                        self.fillSoundMenu(self.soundMenuScrollLevel);
+            
+                        // remove object url from memory
+                        URL.revokeObjectURL(objectURL);
+
+                        // clean up
+                        self.uploadButton.remove();
+                    
+                    });
+                
                 }
+
             );
 
             // create context menu sounds at current scroll level
@@ -583,11 +572,7 @@ class Editor extends Phaser.Scene {
 
         });
 
-        // put scrollbar where it needs to be
-        let scrollAmount = this.scrollBarRange / (
-            (this.numSounds/this.draggableNumCols) - this.draggableNumRows
-        );
-        this.scrollBarHandle.y = this.scrollBarYTop + (scrollAmount*scrollLevel);
+        this.placeScrollbar(scrollLevel, this.numSounds);
 
     }
 
@@ -764,7 +749,139 @@ class Editor extends Phaser.Scene {
 
         objID++;
         });
+
+        return gameData;
     
     }
 
+    placeScrollbar(scrollLevel, numObjects) {
+
+        // put scrollbar where it needs to be
+        let scrollAmount = this.scrollBarRange / (
+            Math.ceil(numObjects/this.draggableNumCols) - this.draggableNumRows
+        );
+        this.scrollBarHandle.y = this.scrollBarYTop + (scrollAmount*scrollLevel);
+        
+    }
+
+    /*
+    createCameraWindow() {
+
+        // camera code from
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
+        // thanks, mdn! <3
+
+        let width = 320;
+        let height = 0;
+        let streaming = false;
+
+        // create camera div
+        let camDiv = document.createElement("DIV");
+        camDiv.className = "camera";
+        document.body.appendChild(camDiv);
+        
+        // create video element
+        let video = document.createElement("VIDEO");
+        video.id = "video";
+        camDiv.appendChild(video);
+        
+        video.style.position = "fixed";
+        video.style.top = "50%";
+        video.style.left = "50%";
+        video.style.zIndex = "9999";
+        video.style.transform = "translate(-50%, -50%)";
+
+        // create photo takin button
+        let takePhoto = document.createElement("BUTTON");
+        takePhoto.id = "takePhoto";
+        camDiv.appendChild(takePhoto);
+
+        takePhoto.style.position = "fixed";
+        takePhoto.style.top = "50%";
+        takePhoto.style.left = "50%";
+        takePhoto.style.zIndex = "10000";
+        takePhoto.style.transform = "translate(-50%, -50%)";
+
+        // create canvas for video frames
+        let canv = document.createElement("CANVAS");
+        canv.id = "canvas";
+        document.body.appendChild(canv);
+        
+        canv.style.display = "none";
+
+        // create output div
+        let outDiv = document.createElement("DIV");
+        outDiv.className = "output";
+        document.body.appendChild(outDiv);
+
+        // create image element
+        let photo = document.createElement("IMG");
+        photo.id = "photo";
+        outDiv.appendChild(photo);
+
+        // can i have video a stream?? pretty please?
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(function(err) {
+            console.log("An error occurred: " + err);
+        });
+
+        // set video attributes when streaming starts
+        video.addEventListener('canplay', function(ev) {
+
+            if (!streaming) {
+                height = video.videoHeight / (video.videoWidth/width);
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                streaming = true;
+            }
+
+        }, false);
+
+        takePhoto.addEventListener('click', function(ev){
+
+            this.add.image(1000, 230, "btnFileOpen");
+
+            var context = canvas.getContext('2d');
+            if (width && height) {
+
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+            
+                var data = canvas.toDataURL("image/png");
+            
+                photo.setAttribute("src", data);
+                
+                this.textures.once('addtexture', function () {
+                    //this.add.image(500, 230, "testimg");
+                    this.add.image(1000, 230, "btnFileOpen");
+                }, this);
+
+
+                //this.textures.addBase64("testimg", data);
+
+            }
+
+            ev.preventDefault();
+            
+        }, false);
+
+        var context = canvas.getContext('2d');
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+
+    }
+    */
+
 }  
+
+

@@ -35,6 +35,7 @@ class Preload extends Phaser.Scene {
         this.load.image("tabSounds", "assets/tabSounds.png");
         this.load.image("tabRooms", "assets/tabRooms.png");
         this.load.image("tabSettings", "assets/tabSettings.png");
+        this.load.image("btnPlay", "assets/btnPlay.png");
         this.load.image("btnNew", "assets/btnNew.png");
         this.load.image("btnSave", "assets/btnSave.png");
         this.load.image("btnFileOpen", "assets/btnFileOpen.png");
@@ -48,6 +49,8 @@ class Preload extends Phaser.Scene {
         this.load.image("btnRecord", "assets/btnRecord.png");        
         this.load.image("btnRemove", "assets/btnRemove.png");        
         this.load.image("btnUpload", "assets/btnUpload.png");        
+        this.load.image("btnUploadPic", "assets/btnUploadPic.png");        
+        this.load.image("btnUploadSound", "assets/btnUploadSound.png");        
         this.load.image("btnAccessibility", "assets/btnAccessibility.png");        
         this.load.image("scrollBarHandle", "assets/scrollBarHandle.png");        
         this.load.image("scrollBar", "assets/scrollBar.png");        

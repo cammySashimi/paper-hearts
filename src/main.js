@@ -23,12 +23,18 @@ let config = {
 			debug: true 
 		}
     },
+    dom: {
+        createContainer: true
+    }
+
 };
 
 let game = new Phaser.Game(config);
 
 // global vars, helpers
 game.global = {
+
+    editorVersion: "0.0.1",
 
     // setUpKeys()
     //   set up keyboard controls, returns object of them
@@ -52,6 +58,16 @@ game.global = {
             shift: _this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
         }
         return keys;
+    },
+
+    base64ToArrayBuffer: function(base64) {
+        let binary_string = window.atob(base64);
+        let len = binary_string.length;
+        let bytes = new Uint8Array(len);
+        for (let i=0; i<len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
     }
 
 }
